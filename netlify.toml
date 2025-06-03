@@ -1,0 +1,19 @@
+[build]
+  command = "npm run build && mkdir -p dist/functions && cp dist/api/api/standalone.js dist/functions/api.js"
+  publish = "dist/public"
+  functions = "dist/functions"
+
+[dev]
+  command = "npm run dev"
+  port = 5001
+  targetPort = 5001
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
