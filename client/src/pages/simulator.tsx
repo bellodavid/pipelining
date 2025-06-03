@@ -15,6 +15,7 @@ import MemoryView from '@/components/MemoryView';
 import InstructionQueue from '@/components/InstructionQueue';
 import HelpDocumentation from '@/components/HelpDocumentation';
 import BeginnerTutorial from '@/components/BeginnerTutorial';
+import WelcomeScreen from '@/components/WelcomeScreen';
 
 const defaultProgram = `// Sample MIPS Assembly Code
 ADD R1, R2, R3    // R1 = R2 + R3
@@ -39,6 +40,7 @@ export default function Simulator() {
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const [showHelp, setShowHelp] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [isFirstVisit, setIsFirstVisit] = useState(true);
 
   const updateState = useCallback(() => {
     const newState = simulator.getState();
@@ -141,6 +143,16 @@ export default function Simulator() {
     loadProgram(defaultProgram);
   }, [loadProgram]);
 
+  // Check if user has visited before
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('cpu-simulator-visited');
+    if (!hasVisited) {
+      setIsFirstVisit(true);
+    } else {
+      setIsFirstVisit(false);
+    }
+  }, []);
+
   // Update simulator settings when they change
   useEffect(() => {
     if (intervalId && state.isRunning) {
@@ -157,6 +169,27 @@ export default function Simulator() {
       }
     };
   }, [intervalId]);
+
+  const handleStartTutorial = () => {
+    localStorage.setItem('cpu-simulator-visited', 'true');
+    setIsFirstVisit(false);
+    setShowTutorial(true);
+  };
+
+  const handleSkipToSimulator = () => {
+    localStorage.setItem('cpu-simulator-visited', 'true');
+    setIsFirstVisit(false);
+  };
+
+  // Show welcome screen for first-time visitors
+  if (isFirstVisit) {
+    return (
+      <WelcomeScreen 
+        onStartTutorial={handleStartTutorial}
+        onSkipToSimulator={handleSkipToSimulator}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -314,6 +347,14 @@ export default function Simulator() {
           </Card>
         </div>
       </div>
+
+      {/* Tutorial Modal */}
+      {showTutorial && (
+        <BeginnerTutorial 
+          onClose={() => setShowTutorial(false)} 
+          onLoadSample={loadProgram}
+        />
+      )}
 
       {/* Help Documentation Modal */}
       {showHelp && (
