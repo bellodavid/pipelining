@@ -9,7 +9,9 @@ import {
   SkipForward,
   Lightbulb,
   Target,
-  CheckCircle
+  CheckCircle,
+  School,
+  Users
 } from 'lucide-react';
 
 interface BeginnerTutorialProps {
@@ -303,11 +305,12 @@ SUB R4, R1, R5    // Needs R1 but it's not ready yet!`}
 export default function BeginnerTutorial({ onClose, onLoadSample }: BeginnerTutorialProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const currentTutorialStep = tutorialSteps[currentStep];
 
   const handleNext = () => {
     if (currentStep < tutorialSteps.length - 1) {
-      setCompletedSteps(prev => [...prev, currentStep]);
       setCurrentStep(currentStep + 1);
+      setCompletedSteps([...completedSteps, currentStep]);
     }
   };
 
@@ -321,71 +324,82 @@ export default function BeginnerTutorial({ onClose, onLoadSample }: BeginnerTuto
     const step = tutorialSteps[currentStep];
     if (step.action?.code) {
       onLoadSample(step.action.code);
-      setCompletedSteps(prev => [...prev, currentStep]);
+      setCompletedSteps([...completedSteps, currentStep]);
     }
   };
 
-  const currentTutorialStep = tutorialSteps[currentStep];
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-[95vw] sm:max-w-3xl max-h-[95vh] overflow-y-auto">
+        <div className="p-3 sm:p-6">
           {/* Header */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2">
             <div className="flex items-center space-x-3">
-              <Target className="h-6 w-6 text-blue-600" />
+              <Target className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Beginner Tutorial</h1>
-                <p className="text-sm text-gray-500">
+                <h1 className="text-lg sm:text-xl font-bold text-gray-900">CPU Pipeline Tutorial</h1>
+                <p className="text-xs sm:text-sm text-gray-500">
                   Step {currentStep + 1} of {tutorialSteps.length}
                 </p>
               </div>
             </div>
-            <Button onClick={onClose} variant="outline" size="sm">
-              Skip Tutorial
-            </Button>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 sm:mb-6">
+              <div className="flex items-center space-x-2">
+                <School className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900">CPU Pipeline Tutorial</h2>
+                <Badge className="bg-blue-100 text-blue-800 text-xs sm:text-sm">Step {currentStep + 1}/{tutorialSteps.length}</Badge>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-2 sm:space-x-3">
+                <div className="hidden sm:flex items-center space-x-1 text-xs sm:text-sm text-gray-500">
+                  <Users className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span>Federal University of Technology, Minna</span>
+                </div>
+                <Button onClick={onClose} variant="outline" size="sm" className="text-xs sm:text-sm py-1 h-8">
+                  Skip Tutorial
+                </Button>
+              </div>
+            </div>
           </div>
 
           {/* Progress Bar */}
-          <div className="mb-6">
-            <div className="flex justify-between text-xs text-gray-500 mb-2">
+          <div className="mb-4 sm:mb-6">
+            <div className="flex justify-between text-xs text-gray-500 mb-1 sm:mb-2">
               <span>Progress</span>
               <span>{Math.round(((currentStep + 1) / tutorialSteps.length) * 100)}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-200 rounded-full h-1.5 sm:h-2">
               <div 
-                className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                className="bg-blue-500 h-1.5 sm:h-2 rounded-full transition-all duration-300"
                 style={{ width: `${((currentStep + 1) / tutorialSteps.length) * 100}%` }}
               ></div>
             </div>
           </div>
 
           {/* Step Content */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+          <Card className="mb-4 sm:mb-6">
+            <CardHeader className="px-4 py-3 sm:p-6">
+              <CardTitle className="flex items-center space-x-2 text-base sm:text-lg">
                 {completedSteps.includes(currentStep) && (
-                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
                 )}
                 <span>{currentTutorialStep.title}</span>
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6 text-sm sm:text-base">
               {currentTutorialStep.content}
               
               {/* Action Button */}
               {currentTutorialStep.action && (
-                <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="flex items-center justify-between">
+                <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
-                      <p className="text-green-800 font-medium">Ready to try it?</p>
-                      <p className="text-green-700 text-sm">
+                      <p className="text-green-800 font-medium text-sm sm:text-base">Ready to try it?</p>
+                      <p className="text-green-700 text-xs sm:text-sm">
                         Click the button to load the example program automatically.
                       </p>
                     </div>
-                    <Button onClick={handleAction} className="bg-green-600 hover:bg-green-700">
-                      <Play className="h-4 w-4 mr-2" />
+                    <Button onClick={handleAction} className="bg-green-600 hover:bg-green-700 text-xs sm:text-sm py-1 h-8 sm:h-9">
+                      <Play className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                       {currentTutorialStep.action.text}
                     </Button>
                   </div>
@@ -400,12 +414,13 @@ export default function BeginnerTutorial({ onClose, onLoadSample }: BeginnerTuto
               onClick={handlePrevious} 
               variant="outline"
               disabled={currentStep === 0}
+              className="text-xs sm:text-sm py-1 h-8 sm:h-9"
             >
-              <ChevronLeft className="h-4 w-4 mr-2" />
+              <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
               Previous
             </Button>
 
-            <div className="flex space-x-2">
+            <div className="hidden sm:flex space-x-2">
               {tutorialSteps.map((_, index) => (
                 <div
                   key={index}
@@ -421,14 +436,14 @@ export default function BeginnerTutorial({ onClose, onLoadSample }: BeginnerTuto
             </div>
 
             {currentStep === tutorialSteps.length - 1 ? (
-              <Button onClick={onClose} className="bg-green-600 hover:bg-green-700">
-                <CheckCircle className="h-4 w-4 mr-2" />
+              <Button onClick={onClose} className="bg-green-600 hover:bg-green-700 text-xs sm:text-sm py-1 h-8 sm:h-9">
+                <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                 Finish Tutorial
               </Button>
             ) : (
-              <Button onClick={handleNext}>
+              <Button onClick={handleNext} className="text-xs sm:text-sm py-1 h-8 sm:h-9">
                 Next
-                <ChevronRight className="h-4 w-4 ml-2" />
+                <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" />
               </Button>
             )}
           </div>

@@ -10,7 +10,9 @@ import {
   Zap, 
   Target,
   Clock,
-  TrendingUp
+  TrendingUp,
+  School,
+  Users
 } from 'lucide-react';
 
 interface WelcomeScreenProps {
@@ -22,24 +24,33 @@ export default function WelcomeScreen({ onStartTutorial, onSkipToSimulator }: We
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="max-w-4xl w-full">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <div className="bg-blue-600 rounded-full p-4">
-              <Cpu className="h-12 w-12 text-white" />
+        <div className="text-center mb-6 md:mb-8">
+          <div className="flex flex-col md:flex-row items-center justify-center mb-4 gap-3">
+            <div className="bg-blue-600 rounded-full p-3 md:p-4">
+              <Cpu className="h-8 w-8 md:h-12 md:w-12 text-white" />
+            </div>
+            <div className="flex items-center">
+              <School className="h-6 w-6 md:h-8 md:w-8 text-blue-700 mr-2" />
+              <span className="text-sm md:text-base font-semibold text-blue-800">Federal University of Technology, Minna</span>
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
             CPU Pipeline Simulator
           </h1>
-          <p className="text-xl text-gray-600 mb-4">
-            Learn how computer processors work through interactive visualization
+          <p className="text-lg md:text-xl text-gray-600 mb-3 md:mb-4 px-2">
+            Interactive visualization of computer processor pipelining
           </p>
-          <Badge className="bg-blue-100 text-blue-800 px-3 py-1">
-            Educational Tool • 5-Stage RISC Pipeline
-          </Badge>
+          <div className="flex flex-wrap justify-center gap-2 mb-2">
+            <Badge className="bg-blue-100 text-blue-800 px-3 py-1">
+              5-Stage RISC Pipeline
+            </Badge>
+            <Badge className="bg-green-100 text-green-800 px-3 py-1 flex items-center">
+              <Users className="h-3 w-3 mr-1" /> Group 2 Project
+            </Badge>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 mb-6 md:mb-8">
           {/* Tutorial Option */}
           <Card className="border-2 border-blue-200 hover:border-blue-400 transition-colors cursor-pointer group">
             <CardHeader>
@@ -51,8 +62,8 @@ export default function WelcomeScreen({ onStartTutorial, onSkipToSimulator }: We
             <CardContent>
               <div className="space-y-4">
                 <p className="text-gray-700">
-                  Perfect for beginners! Learn step-by-step how CPU pipelines work 
-                  with guided explanations and interactive examples.
+                  Learn step-by-step how CPU pipelines work with guided explanations 
+                  and interactive examples.
                 </p>
                 
                 <div className="space-y-2">
@@ -154,39 +165,39 @@ export default function WelcomeScreen({ onStartTutorial, onSkipToSimulator }: We
 
         {/* Key Concepts Preview */}
         <Card className="bg-white/50 backdrop-blur-sm">
-          <CardHeader>
-            <CardTitle className="text-center text-gray-800">
-              What You'll Explore
+          <CardHeader className="pb-2 md:pb-6">
+            <CardTitle className="text-center text-gray-800 text-lg md:text-xl">
+              Key Concepts
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
               <div className="text-center">
-                <div className="bg-blue-100 rounded-full p-3 w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                  <Cpu className="h-8 w-8 text-blue-600" />
+                <div className="bg-blue-100 rounded-full p-2 md:p-3 w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-3 flex items-center justify-center">
+                  <Cpu className="h-6 w-6 md:h-8 md:w-8 text-blue-600" />
                 </div>
-                <h3 className="font-semibold text-gray-800 mb-2">Pipeline Stages</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-semibold text-gray-800 mb-1 md:mb-2">Pipeline Stages</h3>
+                <p className="text-xs md:text-sm text-gray-600">
                   See how instructions flow through IF, ID, EX, MEM, and WB stages
                 </p>
               </div>
               
               <div className="text-center">
-                <div className="bg-amber-100 rounded-full p-3 w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                  <Target className="h-8 w-8 text-amber-600" />
+                <div className="bg-amber-100 rounded-full p-2 md:p-3 w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-3 flex items-center justify-center">
+                  <Target className="h-6 w-6 md:h-8 md:w-8 text-amber-600" />
                 </div>
-                <h3 className="font-semibold text-gray-800 mb-2">Hazard Detection</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-semibold text-gray-800 mb-1 md:mb-2">Hazard Detection</h3>
+                <p className="text-xs md:text-sm text-gray-600">
                   Understand data, control, and structural hazards in real-time
                 </p>
               </div>
               
               <div className="text-center">
-                <div className="bg-green-100 rounded-full p-3 w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                  <TrendingUp className="h-8 w-8 text-green-600" />
+                <div className="bg-green-100 rounded-full p-2 md:p-3 w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-3 flex items-center justify-center">
+                  <TrendingUp className="h-6 w-6 md:h-8 md:w-8 text-green-600" />
                 </div>
-                <h3 className="font-semibold text-gray-800 mb-2">Performance Analysis</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-semibold text-gray-800 mb-1 md:mb-2">Performance Analysis</h3>
+                <p className="text-xs md:text-sm text-gray-600">
                   Measure CPI, speedup, and efficiency with detailed metrics
                 </p>
               </div>
@@ -194,9 +205,10 @@ export default function WelcomeScreen({ onStartTutorial, onSkipToSimulator }: We
           </CardContent>
         </Card>
 
-        <div className="text-center mt-6">
-          <p className="text-sm text-gray-500">
-            This simulator helps students understand computer architecture concepts through hands-on experimentation
+        <div className="text-center mt-4 md:mt-6">
+          <p className="text-xs md:text-sm text-gray-500">
+            Developed by Group 2, Department of Computer Engineering<br />
+            Federal University of Technology, Minna
           </p>
         </div>
       </div>

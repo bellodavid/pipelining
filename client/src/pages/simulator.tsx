@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Cpu, Play, Pause, SkipForward, RotateCcw, Download, HelpCircle } from 'lucide-react';
+import { Cpu, Play, Pause, SkipForward, RotateCcw, Download, HelpCircle, FileText, ExternalLink } from 'lucide-react';
+import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -193,94 +194,112 @@ export default function Simulator() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex-shrink-0">
-                <Cpu className="h-8 w-8 text-blue-600" />
-              </div>
-              <div>
-                <h1 className="text-xl font-semibold text-gray-900">CPU Pipeline Simulator</h1>
-                <p className="text-sm text-gray-500">5-Stage RISC Pipeline Educational Tool</p>
-              </div>
+      <div className="min-h-screen bg-gray-50 p-2 sm:p-4">
+        {/* Header - Mobile Responsive */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+          <div className="flex items-center">
+            <Cpu className="h-6 w-6 text-blue-600 mr-2" />
+            <h1 className="text-xl font-bold text-gray-900">CPU Pipeline Simulator</h1>
+          </div>
+          
+          {/* Stats and Controls - Mobile Responsive */}
+          <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
+            <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs sm:text-sm font-medium flex items-center">
+              <span className="font-mono font-semibold">{state.instructions.length}</span>
+              <span className="ml-1">Instructions</span>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-600">
-                <span className="font-medium">Cycle:</span>{' '}
-                <span className="font-mono font-semibold text-blue-600">{state.currentCycle}</span>
-              </div>
-              <div className="text-sm text-gray-600">
-                <span className="font-medium">CPI:</span>{' '}
-                <span className="font-mono font-semibold text-emerald-600">{metrics.cpi}</span>
-              </div>
-              <Button variant="outline" size="sm" onClick={() => setShowTutorial(true)}>
-                <Play className="h-4 w-4 mr-2" />
-                Tutorial
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => setShowHelp(true)}>
-                <HelpCircle className="h-4 w-4 mr-2" />
-                Help
-              </Button>
-              <Button onClick={exportResults} size="sm">
-                <Download className="h-4 w-4 mr-2" />
-                Export Results
-              </Button>
+            <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs sm:text-sm font-medium flex items-center">
+              <span>CPI:</span>{' '}
+              <span className="font-mono font-semibold">{metrics.cpi}</span>
             </div>
           </div>
+          
+          {/* Controls - Mobile Responsive */}
+          <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
+            <Button variant="outline" size="sm" className="text-xs sm:text-sm h-8 px-2 sm:px-3" onClick={() => setShowTutorial(true)}>
+              <Play className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+              <span className="whitespace-nowrap">Tutorial</span>
+            </Button>
+            <Button variant="outline" size="sm" className="text-xs sm:text-sm h-8 px-2 sm:px-3" onClick={() => setShowHelp(true)}>
+              <HelpCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+              <span className="whitespace-nowrap">Help</span>
+            </Button>
+            <Link href="/docs">
+              <Button variant="outline" size="sm" className="text-xs sm:text-sm h-8 px-2 sm:px-3">
+                <FileText className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                <span className="whitespace-nowrap">Docs</span>
+              </Button>
+            </Link>
+            <Button onClick={exportResults} size="sm" className="text-xs sm:text-sm h-8 px-2 sm:px-3">
+              <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+              <span className="whitespace-nowrap">Export</span>
+            </Button>
+          </div>
         </div>
-      </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Control Panel */}
-        <Card className="mb-6">
-          <CardContent className="p-6">
-            <ControlPanel
-              state={state}
-              settings={settings}
-              onStep={stepSimulation}
-              onStart={startSimulation}
-              onPause={pauseSimulation}
-              onReset={resetSimulation}
-              onSettingsChange={updateSettings}
-            />
+        {/* Control Panel - Mobile Responsive */}
+        <Card className="mb-4 sm:mb-6">
+          <CardContent className="p-3 sm:p-6">
+            <div className="overflow-x-auto pb-2">
+              <ControlPanel
+                state={state}
+                settings={settings}
+                onStep={stepSimulation}
+                onStart={startSimulation}
+                onPause={pauseSimulation}
+                onReset={resetSimulation}
+                onSettingsChange={updateSettings}
+              />
+            </div>
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-          {/* Pipeline Visualization - Takes 3 columns */}
-          <div className="xl:col-span-3">
-            <PipelineVisualization state={state} />
-          </div>
+        {/* Pipeline Visualization - Mobile Responsive */}
+        <Card className="mb-4 sm:mb-6">
+          <CardContent className="p-3 sm:p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
+              {/* Left side - Pipeline Visualization */}
+              <div className="lg:col-span-8">
+                <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">Pipeline Visualization</h2>
+                <div className="overflow-x-auto">
+                  <PipelineVisualization 
+                    state={state}
+                  />
+                </div>
+              </div>
+              
+              {/* Right side - Instructions Queue */}
+              <div className="lg:col-span-4">
+                <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">Instruction Queue</h2>
+                <InstructionQueue 
+                  state={state}
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-          {/* Control Panel */}
-          <div className="xl:col-span-1">
-            <PerformanceMetrics metrics={metrics} />
-          </div>
-        </div>
-
-        {/* Second Row: Code Input and Additional Components */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        {/* Second Row: Code Input */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
           <CodeEditor onLoadProgram={loadProgram} defaultCode={defaultProgram} />
-          <InstructionQueue state={state} />
+          <PerformanceMetrics metrics={metrics} />
         </div>
 
         {/* Third Row: Register and Memory State */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
           <RegisterFile registers={state.registers} currentCycle={state.currentCycle} />
           <MemoryView memory={state.memory} currentCycle={state.currentCycle} />
         </div>
 
         {/* Performance Comparison */}
-        <div className="mt-6">
+        <div className="mt-4 sm:mt-6">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
+            <CardHeader className="py-3 sm:py-4">
+              <CardTitle className="flex items-center text-base sm:text-lg">
                 Performance Comparison
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-3 sm:p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Pipelined vs Non-Pipelined */}
                 <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-lg p-4 border">
