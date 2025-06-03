@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { CPUSimulator } from '@/lib/cpuSimulator';
 import { PerformanceAnalyzer } from '@/lib/performanceAnalyzer';
-import { SimulationState, PerformanceMetrics, SimulationSettings } from '@/types/cpu';
+import { SimulationState, PerformanceMetrics as MetricsType, SimulationSettings } from '@/types/cpu';
 import PipelineVisualization from '@/components/PipelineVisualization';
 import ControlPanel from '@/components/ControlPanel';
 import PerformanceMetrics from '@/components/PerformanceMetrics';
@@ -27,7 +27,7 @@ OR R14, R15, R16  // R14 = R15 | R16`;
 export default function Simulator() {
   const [simulator] = useState(() => new CPUSimulator());
   const [state, setState] = useState<SimulationState>(simulator.getState());
-  const [metrics, setMetrics] = useState<PerformanceMetrics>(PerformanceAnalyzer.calculateMetrics(state));
+  const [metrics, setMetrics] = useState<MetricsType>(PerformanceAnalyzer.calculateMetrics(state));
   const [settings, setSettings] = useState<SimulationSettings>({
     forwardingEnabled: true,
     branchPredictionEnabled: false,
