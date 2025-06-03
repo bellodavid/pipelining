@@ -13,6 +13,8 @@ import CodeEditor from '@/components/CodeEditor';
 import RegisterFile from '@/components/RegisterFile';
 import MemoryView from '@/components/MemoryView';
 import InstructionQueue from '@/components/InstructionQueue';
+import HelpDocumentation from '@/components/HelpDocumentation';
+import BeginnerTutorial from '@/components/BeginnerTutorial';
 
 const defaultProgram = `// Sample MIPS Assembly Code
 ADD R1, R2, R3    // R1 = R2 + R3
@@ -35,6 +37,8 @@ export default function Simulator() {
     stepMode: false
   });
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+  const [showHelp, setShowHelp] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   const updateState = useCallback(() => {
     const newState = simulator.getState();
@@ -178,7 +182,11 @@ export default function Simulator() {
                 <span className="font-medium">CPI:</span>{' '}
                 <span className="font-mono font-semibold text-emerald-600">{metrics.cpi}</span>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={() => setShowTutorial(true)}>
+                <Play className="h-4 w-4 mr-2" />
+                Tutorial
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => setShowHelp(true)}>
                 <HelpCircle className="h-4 w-4 mr-2" />
                 Help
               </Button>
@@ -306,6 +314,11 @@ export default function Simulator() {
           </Card>
         </div>
       </div>
+
+      {/* Help Documentation Modal */}
+      {showHelp && (
+        <HelpDocumentation onClose={() => setShowHelp(false)} />
+      )}
     </div>
   );
 }
